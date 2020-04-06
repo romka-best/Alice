@@ -48,7 +48,6 @@ def handle_dialog(req, res):
         return
 
     session = sessionStorage[user_id]
-    logging.info(session, sessionStorage)
 
     CORRECT_ANSWERS = ['ладно',
                        'куплю',
@@ -56,7 +55,7 @@ def handle_dialog(req, res):
                        'хорошо']
     for answer in CORRECT_ANSWERS:
         if answer in req['request']['original_utterance'].lower():
-            if session['current'] == 'слон':
+            if 'слон' in session['current']:
                 res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!\n' \
                                           'А теперь купи кролика!'
                 session['current'] = 'кролик'
@@ -65,8 +64,7 @@ def handle_dialog(req, res):
                 res['response']['text'] = 'Кролика можно найти также на Яндекс.Маркете!'
                 res['response']['end_session'] = True
             return
-
-    if session['current'] == 'слон':
+    if 'слон' in session['current']:
         res['response']['text'] = \
             f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
     else:
@@ -87,7 +85,7 @@ def get_suggests(user_id):
     sessionStorage[user_id] = session
 
     if len(suggests) < 2:
-        cur = 'слон' if session['current'] == 'слон' else 'кролик'
+        cur = 'слон' if 'слон' in session['current'] else 'кролик'
         suggests.append({
             "title": "Ладно",
             "url": f"https://market.yandex.ru/search?text={cur}",
