@@ -48,6 +48,7 @@ def handle_dialog(req, res):
         return
 
     session = sessionStorage[user_id]
+    logging.info(session, sessionStorage)
 
     CORRECT_ANSWERS = ['ладно',
                        'куплю',
@@ -58,6 +59,7 @@ def handle_dialog(req, res):
             if session['current'] == 'слон':
                 res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!\n' \
                                           'А теперь купи кролика!'
+                session['current'] = 'кролик'
                 sessionStorage[user_id] = session
             else:
                 res['response']['text'] = 'Кролика можно найти также на Яндекс.Маркете!'
